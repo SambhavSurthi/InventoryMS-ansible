@@ -1,0 +1,44 @@
+name: CI Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1 — Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2 — Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Step 3 — Login to DockerHub
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_SECRET }}
+
+      # Step 4 — Build & Push Backend Image
+      - name: Build and Push Backend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./inventoryms #🥷path of your project inside git(in my repo my project expense-splitter is present frontend folder inside that expense-splitter is my project)
+          file: ./inventoryms/backend.Dockerfile #🥷path of your frontend.Dockerfile project inside git
+          push: true
+          tags: ${{ secrets.DOCKER_USER }}/inventoryms-ansible-backend:latest #🥷change to the image name you want
+
+      # Step 5 — Build & Push Frontend Image
+      - name: Build and Push Frontend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./inventoryms-frontend   #🥷path of your project inside git(in my repo my project expense-splitter is present frontend folder inside that expense-splitter is my project)
+          file: ./inventoryms-frontend/frontend.Dockerfile #🥷path of your frontend.Dockerfile project inside git
+          push: true
+          tags: ${{ secrets.DOCKER_USER }}/inventoryms-ansible-backend:latest  #🥷change to the image name you want
