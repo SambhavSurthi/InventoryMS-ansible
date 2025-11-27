@@ -41,4 +41,4 @@ jobs:
           context: ./inventoryms-frontend   #🥷path of your project inside git(in my repo my project expense-splitter is present frontend folder inside that expense-splitter is my project)
           file: ./inventoryms-frontend/frontend.Dockerfile #🥷path of your frontend.Dockerfile project inside git
           push: true
-          tags: ${{ secrets.DOCKER_USER }}/inventoryms-ansible-backend:latest  #🥷change to the image name you want
+          tags: ${{ secrets.DOCKER_USER }}/inventoryms-ansible-frontend:latest  #🥷change to the image name you want
